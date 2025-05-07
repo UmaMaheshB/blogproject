@@ -1,0 +1,7 @@
+07/05/2025
+1.added new url in root url (/post)
+2.created new file under blog folder
+3.added new urls in blog/urls.py(/all, /news)
+4.added new functions in blog/views.py (home, news)
+5.created new file under templates(home.html)
+6.added template related settings under settings.py file

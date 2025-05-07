@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	{% for post in posts %}
+		<h2>{{post.title}} - {{post.author.username}}: </h2>
+		<h4>{{post.content}}</h2>
+		<h5 style="color:red">{{post.category.name}}</h5>
+		<hr>
+	{% endfor %}
+</body>
+</html>
