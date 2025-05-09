@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-</head>
-<body>
-	{% for post in posts %}
-		<h2>{{post.title}} - {{post.author.username}}: </h2>
-		<h4>{{post.content}}</h2>
-		<h5 style="color:red">{{post.category.name}}</h5>
-		<hr>
-	{% endfor %}
-</body>
-</html>
+{% extends 'base.html'%}
+{% block 'content' %}
+	<div class="container mt-3 row">
+		{% for post in posts %}
+			<div class="card" style="width:350px">
+			    <img class="card-img-top" src="{{post.image_url}}" alt="Card image" style="width:100%">
+			    <div class="card-body">
+			      <h4 class="card-title">{{post.title}}</h4>
+			      <p class="card-text">{{post.content | truncatechars:30}}</p>
+			      <a href="#" class="btn btn-primary">See Details</a>
+		    	</div>
+	  		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
