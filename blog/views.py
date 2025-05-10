@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from blog.models import Post
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
@@ -10,8 +11,28 @@ def home(request):
 	posts = Post.objects.all().order_by("-id")
 	return render(request, "home.html", {"posts": posts})
 
+def post_detail(request, post_id):
+	post = get_object_or_404(Post, pk=post_id)
+	return render(request, 'post_detail.html', {"post": post})
+
+def post_delete(request, post_id):
+	post = get_object_or_404(Post, pk=post_id)
+	if post.author != request.user:
+		return HttpResponse("<p style='color:red'>you don't have rights to delete this post</p>")
+
+	if request.method == 'POST':
+		post.delete()
+		return redirect("blog-home")
+	return render(request, "post_cofirm_delete.html", {'post': post})
+
+
+@login_required
 def news(request):
 	return HttpResponse("this is news related posts")
+
+def category_posts(request, category_name):
+	posts = Post.objects.filter(category__name=category_name).order_by("-id")
+	return render(request, "home.html", {"posts": posts})
 
 def user_login(request):
 	if request.method == "POST":
@@ -20,7 +41,6 @@ def user_login(request):
 		form = AuthenticationForm(data=request.POST)
 		if form.is_valid():
 			user = form.get_user()
-			print(user)
 			login(request, user) # main user login logic
 			return redirect('blog-home')
 	else:
@@ -28,4 +48,5 @@ def user_login(request):
 		return render(request, "login.html", {"form": form})
 
 def user_logout(request):
-	pass
+	logout(request)
+	return redirect('user-login')
