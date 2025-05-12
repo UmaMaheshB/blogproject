@@ -5,3 +5,16 @@
 4.added new functions in blog/views.py (home, news)
 5.created new file under templates(home.html)
 6.added template related settings under settings.py file
+-----------------------------------------------------
+12/05/2025
+To pause the program flow we need to use breakpoint method
+OR
+To debug the code we can use breakpoint method 
+
+breakpoint commands:
+ll -> list command to see exactly where execution paused
+n -> next command (it will executes the current line and moved to next line)
+p -> print (it is shortcut for print method)
+c -> continue (it will executes the all remaining statements/ lines)
+s -> step into
+r -> return statement
