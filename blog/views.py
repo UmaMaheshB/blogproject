@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from blog.models import Post
+from blog.models import Post, Category
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from . import example_data
+from django.views import View
 
 # Create your views here.
 def home(request):
@@ -26,9 +28,8 @@ def post_delete(request, post_id):
 	return render(request, "post_cofirm_delete.html", {'post': post})
 
 
-@login_required
 def news(request):
-	return HttpResponse("this is news related posts")
+	return HttpResponse('hello')
 
 def category_posts(request, category_name):
 	posts = Post.objects.filter(category__name=category_name).order_by("-id")
@@ -45,8 +46,26 @@ def user_login(request):
 			return redirect('blog-home')
 	else:
 		form = AuthenticationForm()
-		return render(request, "login.html", {"form": form})
+	return render(request, "login.html", {"form": form})
 
 def user_logout(request):
 	logout(request)
 	return redirect('user-login')
+
+# def new_category(request):
+# 	if request.method == "GET":
+# 		return render(request, 'new_category.html')
+# 	if request.method == "POST":
+# 		category_name = request.POST.get("category_name")
+# 		Category.objects.create(name=category_name)
+# 		return redirect('blog-home')
+
+class NewCategory(View):
+	def get(self, request):
+		return render(request, 'new_category.html')
+
+	def post(self, request):
+		category_name = request.POST.get("category_name")
+		Category.objects.create(name=category_name)
+		return redirect('blog-home')
+
