@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('all/', views.home, name="blog-home"),
@@ -13,5 +14,5 @@ urlpatterns = [
 
 
     # path('new/category/', views.new_category, name="new-category"),
-    path('new/category/', views.NewCategory.as_view(), name="new-category"),
+    path('new/category/', login_required(views.NewCategory.as_view()), name="new-category"),
 ]
