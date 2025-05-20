@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from . import example_data
 from django.views import View
 from django.contrib import messages
+from . import forms
 
 # Create your views here.
 def home(request):
@@ -77,3 +78,15 @@ class NewCategory(View):
 		messages.success(request, "New category added successfully :)")
 		return redirect('blog-home')
 
+def new_post(request):
+	if request.method == "GET":
+		form = forms.PostForm()
+		return render(request, "post_form.html", {"form": form})
+	if request.method == "POST":
+		form = forms.PostForm(request.POST)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.author = request.user
+			post.save()
+			messages.success(request, "Post created successfully")
+			return redirect("blog-home")
