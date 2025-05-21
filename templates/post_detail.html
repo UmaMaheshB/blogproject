@@ -6,6 +6,6 @@
 {% if post.image_url %}
 	<img src="{{ post.image_url }}" alt="{{ post.title }}" width="400" style="border: 5px dashed red;">
 {% endif %}
-<a href="#" class="btn btn-primary">Edit</a>
+<a href="{% url 'post-update' post.id%}" class="btn btn-primary">Edit</a>
 <a href="{% url 'post-delete' post.id%}" class="btn btn-danger">Delete</a>
 {% endblock %}

@@ -18,8 +18,8 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="{% url 'blog-home' %}">Home</a></li>
-      <li><a href="#">New Post</a></li>
       {% if user.is_authenticated %}
+        <li><a href="{% url 'new-post' %}">New Post</a></li>
         <li><a href="{% url 'new-category' %}">New Category</a></li>
         <li><a href="#">{{ user.username }}</a></li>
         <li><a href="{% url 'user-logout' %}">Logout</a></li>

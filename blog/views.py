@@ -79,9 +79,6 @@ class NewCategory(View):
 		return redirect('blog-home')
 
 def new_post(request):
-	if request.method == "GET":
-		form = forms.PostForm()
-		return render(request, "post_form.html", {"form": form})
 	if request.method == "POST":
 		form = forms.PostForm(request.POST)
 		if form.is_valid():
@@ -90,3 +87,22 @@ def new_post(request):
 			post.save()
 			messages.success(request, "Post created successfully")
 			return redirect("blog-home")
+	else:
+		form = forms.PostForm()
+	return render(request, "post_form.html", {"form": form})
+	
+
+def post_update(request, post_id):
+	post = get_object_or_404(Post, pk=post_id)
+	if post.author != request.user:
+		messages.warning(request, "you don't have permission to edit this post")
+		return redirect("blog-home")
+	if request.method == "POST":
+		form = forms.PostForm(request.POST, instance=post)
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Post has been updated successfully")
+			return redirect('post-detail', post.id)
+	else:
+		form = forms.PostForm(instance=post)
+	return render(request, "post_form.html", {"form": form})
