@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from blog.models import Post, Category
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from . import example_data
@@ -106,3 +106,15 @@ def post_update(request, post_id):
 	else:
 		form = forms.PostForm(instance=post)
 	return render(request, "post_form.html", {"form": form})
+
+def register(request):
+	if request.method == "POST":
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Registeration completed successfully")
+			return redirect("blog-home")
+	else:
+		form = UserCreationForm()
+	return render(request, "register.html", {"form": form})

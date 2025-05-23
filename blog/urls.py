@@ -17,4 +17,6 @@ urlpatterns = [
 
     # path('new/category/', views.new_category, name="new-category"),
     path('new/category/', login_required(views.NewCategory.as_view()), name="new-category"),
+    path('register/', views.register, name="register"),
+
 ]
