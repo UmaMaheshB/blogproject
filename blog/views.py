@@ -13,11 +13,13 @@ from . import forms
 def home(request):
 	# posts = Post.objects.all()
 	posts = Post.objects.all().order_by("-id")
-	return render(request, "home.html", {"posts": posts})
+	categories = Category.objects.all()
+	return render(request, "home.html", {"posts": posts, "categories": categories})
 
 def post_detail(request, post_id):
+	categories = Category.objects.all()
 	post = get_object_or_404(Post, pk=post_id)
-	return render(request, 'post_detail.html', {"post": post})
+	return render(request, 'post_detail.html', {"post": post, "categories": categories})
 
 def post_delete(request, post_id):
 	post = get_object_or_404(Post, pk=post_id)
@@ -36,8 +38,9 @@ def news(request):
 	return HttpResponse('hello')
 
 def category_posts(request, category_name):
+	categories = Category.objects.all()
 	posts = Post.objects.filter(category__name=category_name).order_by("-id")
-	return render(request, "home.html", {"posts": posts})
+	return render(request, "home.html", {"posts": posts, "categories": categories})
 
 def user_login(request):
 	if request.method == "POST":
